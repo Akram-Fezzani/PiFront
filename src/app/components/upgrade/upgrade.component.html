@@ -1,0 +1,182 @@
+<app-navbar></app-navbar>
+
+<div class="wrapper">
+ 
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+              <h3 class="text-on-back">Upgrade </h3>
+              <div style="align-content: center;">
+              <p class="profile-description">
+                If you represent a company or an association, we will be glad to let you contribute and share our dream to make this world better for every single women, to upgrade your account to a contributor account, please share the needed data bellow.
+              </p>
+            </div>
+            <div class="card-body">
+                <form class="form">
+                    <div
+                    class="input-group"
+                  >
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+  
+                      </div>
+                    </div>
+                    <input
+                      class="form-control"
+                      [(ngModel)]="contributor.typeContributor" name="TypeContributor"
+                      placeholder="Type Contributor "
+                      type="text"
+                    />
+                  </div>
+                    
+                    <div
+                      class="input-group"
+                    >
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                        </div>
+                      </div>
+                      <input
+                        class="form-control"
+                        [(ngModel)]="contributor.adress" name="adress"
+                        placeholder="Adress"
+                        type="text"
+                      />
+                    </div>
+                    <div
+                    class="input-group"
+                  >
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                          <i class="fas fa-server"></i>
+                      </div>
+                    </div>
+                    <input
+                      class="form-control"
+                      [(ngModel)]="contributor.domain" name="domain"
+
+                      placeholder="Domain"
+                      type="text"
+                    />
+                  </div>
+  
+  
+                  <div
+                  class="input-group"
+                >
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="tim-icons icon-lock-circle"> </i>
+                    </div>
+                  </div>
+                  <input
+                    class="form-control"
+                    [(ngModel)]="contributor.legalStatus" name="legalStatus"
+                    placeholder="Legal Status "
+                    type="text"
+                  />
+                </div>
+                <div style="align-content: center;">
+                    <a
+                     (click)="AddContributor()"
+                     class="btn btn-primary btn-round btn-lg btn-block"
+                      href="javascript:void(0)"
+                    >
+                    Upgrade
+                    </a>
+                  </div>
+                </form>
+
+            </div>
+        </div>
+       
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+
+          <a
+          [routerLink]="['/home']"
+          target="_blank"
+          tooltip="Back to home page"
+        >
+        <img src="../../../assets/images/Asset 3.png" width="90"/>  
+       <br>
+        <a class="niceBar">Eve's Paradise.</a>      </a>   
+        </div>
+        <div class="col-md-3">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/home']"> Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/landing']"> Landing </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/register']"> Register </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/profile']"> Profile </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" href="https://creative-tim.com/contact-us">
+                Contact Us
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://creative-tim.com/about-us">
+                About Us
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://creative-tim.com/blog">
+                Blog
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://opensource.org/licenses/MIT">
+                License
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h3 class="title">Follow us:</h3>
+          <div class="btn-wrapper profile">
+            <a
+              class="btn btn-icon btn-neutral btn-round btn-simple mr-1"
+              href="https://twitter.com/creativetim"
+              target="_blank"
+            >
+              <i class="fab fa-twitter"> </i>
+            </a>
+            <a
+              class="btn btn-icon btn-neutral btn-round btn-simple mr-1"
+              href="https://www.facebook.com/creativetim"
+              target="_blank"
+            >
+              <i class="fab fa-facebook-square"> </i>
+            </a>
+            <a
+              class="btn btn-icon btn-neutral btn-round btn-simple"
+              href="https://dribbble.com/creativetim"
+              target="_blank"
+            >
+              <i class="fab fa-dribbble"> </i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

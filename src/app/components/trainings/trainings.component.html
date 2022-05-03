@@ -1,0 +1,76 @@
+
+<div class="wrapper">
+
+  <section class="section section-lg section-coins">
+    <div class="squares square1"></div>
+    <div class="squares square2"></div>
+    <div class="squares square3"></div>
+
+    <div class="squares square7"></div>
+    <img class="path" src="../../../assets/img/path3.png" />
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <hr class="line-info" />
+
+          <h1>
+            Choose the training
+            <span class="text-info"> that fits your needs </span>
+          </h1>
+          <a
+            class="btn btn-danger btn-simple btn-round btn-lg marg-trainer"
+            [routerLink]="['/addTraining']"
+            target="_blank"
+
+          >
+            Add your Training
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 margin-coins" *ngFor="let u of ListTrainings">
+          <div class="card card-coin card-plain">
+            <div class="card-header">
+              <img class="img-center img-fluid" src="../../../assets/img/bitcoin.png" />
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <h4 class="text-uppercase">{{u.domain}}</h4>
+                  <span> Plan </span>
+                  <hr class="line-primary" />
+                </div>
+              </div>
+              <div class="row">
+                <ul class="list-group">
+                  <li class="list-group-item text-success">Starting On :</li>
+                  <li class="list-group-item">{{u.startDate}}</li>
+                  <li class="list-group-item text-success">Until :</li>
+                  <li class="list-group-item">{{u.endDate}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-footer text-center">
+              <button class="btn btn-primary btn-simple">Join Now !</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

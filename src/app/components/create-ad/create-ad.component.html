@@ -1,0 +1,33 @@
+<div class="bigContainer">
+
+  <div id="inputs">
+    <img style="float:right;margin-top: -50px" src="../../../assets/img/mike.jpg" width="60" class="rounded-circle" alt="...">
+
+    <h3>Create advertisement</h3>
+
+    <div class="row">
+      <form style="width:100%" [formGroup]="addAdForm">
+        <div>
+          <div class="form-group">
+            <div>
+              <input (keyup)="addTag($event)" style="width:70%;float: left" id="tags" placeholder="Ad tags" type="text" class="form-control">
+
+              <button [disabled]="!$any(addAdForm).valid || disableSubmit" (click)="addAd()" style="width:15%;float: right" class="btn btn-info btn-icon" type="submit"><span *ngIf="!uploading">Create</span><span *ngIf="uploading" class="spinner"></span></button>
+
+            </div>
+            <br><br>
+            <div style="margin-left:15px;height:20px;color:red;font-size:12px" >
+              <span *ngIf="!disableSubmit && tags.touched ">Tags required</span>
+            </div>
+            <div style="margin-left:15px;height:70px;width: 500px;font-size:12px" >
+              <span *ngFor="let word of words ; let i = index">
+                <span class="badge badge-pill badge-info" id="{{word}}{{i}}" style="margin: 5px">{{word}} <span style="cursor: pointer" (click)="removeWord(word)" ><i class="fa fa-close"></i></span></span>
+                </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

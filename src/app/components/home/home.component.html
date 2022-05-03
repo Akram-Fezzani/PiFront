@@ -1,0 +1,11 @@
+<!--<app-sidebar></app-sidebar>-->
+<div (click)="showChatBot = !showChatBot" style="z-index:99999;top: 90%;left:0;
+  background: rgba(36, 37, 38, 0.8);width: 60px;padding:18px;height: 60px;margin-left:5px" class="bigToolTip">
+  <mat-icon  tooltip="Help bot" @enterSlow *ngIf="!showChatBot">live_help</mat-icon>
+  <mat-icon @rotatedState *ngIf="showChatBot">close</mat-icon>
+</div>
+<div class="chatBotContainer">
+<!--<app-chatbot @enterSlow *ngIf="showChatBot"></app-chatbot>-->
+</div>
+<!--<app-post></app-post>-->
+

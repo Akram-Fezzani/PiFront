@@ -1,0 +1,102 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <div class="page-header header-filter">
+    <div class="squares square1"></div>
+    <div class="squares square2"></div>
+    <div class="squares square3"></div>
+
+    <div class="squares square7"></div>
+
+
+    <section class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card card-plain">
+              <div class="card-header">
+                <h1 class="profile-title text-left marg-addTrain">Update Training</h1>
+                <h5 class="text-on-back marg-backrain">01</h5>
+              </div>
+              <div class="card-body">
+                <form (ngSubmit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label> Domain </label>
+                        <input [(ngModel)]="training.domain" name="domain" class="form-control"
+                               type="text" placeholder="Subject" />
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12 col-12 col-md-6 form-group">
+                      <label> StartDate </label>
+                      <input [(ngModel)]="training.startDate" name="startDate" type="text"
+                             placeholder="StartDate" class="form-control" >
+                    </div>
+                    <div class="col-xs-12 col-12 col-md-6 form-group">
+                      <label> EndDate </label>
+                      <input [(ngModel)]="training.endDate" name="endDate" type="text"
+                             placeholder="EndDate" class="form-control" >
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Subject</label>
+                        <textarea [(ngModel)]="training.subject" name="subject"
+                                  class="form-control bordtextarea" id="exampleFormControlTextarea1"
+                                  rows="3" placeholder="Description of the training"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-danger btn-round float-right margin-btnupd" placement="right"
+                          type="submit">
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 ml-auto">
+            <div class="info info-horizontal">
+              <div class="icon icon-danger">
+                <i class="tim-icons icon-square-pin"> </i>
+              </div>
+              <div class="description">
+                <h4 class="info-title">Find us at the office</h4>
+                <p>
+                  Bld Mihail Kogalniceanu, nr. 8, <br />
+                  Romania
+                </p>
+              </div>
+            </div>
+            <div class="info info-horizontal">
+              <div class="icon icon-danger">
+                <i class="tim-icons icon-mobile"> </i>
+              </div>
+              <div class="description">
+                <h4 class="info-title">Give us a ring</h4>
+                <p>
+                  Michael Jordan <br />
+
+                  +40 762 321 762 <br />
+
+                  Mon - Fri, 8:00-22:00
+                </p>
+                <a class="btn btn-info btn-simple btn-round btn-lg marg-other"
+                   [routerLink]="['/editTrainings']" target="_blank">
+                  Consult your Trainings
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<app-footer></app-footer>

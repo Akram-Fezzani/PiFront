@@ -1,0 +1,24 @@
+<div style="background-color: #242526;margin: 0" class="main-card mb-3 card">
+  <div class="card-header">
+    <br>
+    <h1 mat-dialog-title> Warning</h1>
+  </div>
+  <div class="card-body">
+    <div mat-dialog-content>
+      <div style="font-weight: bolder"><b>Are you sure you want to delete this {{data[0]}} ?</b></div><br>
+      <p>All information associated to this {{data[0]}} will be permanently deleted.
+        <span class="text-danger">This operation can not be undone.</span>
+      </p>
+
+    </div>
+
+  </div>
+  <div class="card-footer">
+    <div style="width:100% ">
+      <div style="float: right">
+        <button [mat-dialog-close]="true" mat-button  class="btn btn-danger" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">Delete</button>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

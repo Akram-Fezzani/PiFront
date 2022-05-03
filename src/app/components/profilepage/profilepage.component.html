@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+
+
+<div class="container d-flex justify-content-center">
+  
+  <div class="card p-3 py-4">
+    
+      <div class="text-center"> <img src="https://i.imgur.com/stD0Q19.jpg" width="100" class="rounded-circle">
+        
+          <h3 class="mt-2">Mounira Hathroubi</h3> <span class="mt-1 clearfix">Software Developor</span>
+          <div class="row mt-3 mb-3">
+              <div class="col-md-4">
+                  <h5>Posts</h5> <span class="num">15</span>
+              </div>
+              <div class="col-md-4">
+                  <h5>Following</h5> <span class="num">10</span>
+              </div>
+              <div class="col-md-4">
+                  <h5>Followed</h5> <span class="num">10</span>
+              </div>
+          </div>
+          <br>
+          
+
+
+          <a
+          [routerLink]="['/updateprofile']"
+
+          class="btn btn-primary btn-round mr-1"
+          href="javascript:void(0)"
+
+          >
+          update profile 
+          </a>
+          
+            <a
+            
+              class="btn btn-danger btn-round btn-lg"
+              href="javascript:void(0)"
+              (click)="logout()"                    >
+              Logout
+            </a>
+    
+
+          
+         
+      </div>
+  </div>
+</div>
+
+

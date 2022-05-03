@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <div class="page-header header-filter">
+    <div class="squares square1"></div>
+    <div class="squares square2"></div>
+    <div class="squares square3"></div>
+
+    <div class="squares square7"></div>
+    <section class="section">
+      <div class="container">
+        <table class="table marg-tab">
+          <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th>Domain</th>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th class="text-left">Subject</th>
+            <th class="text-right">Actions</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let u of ListTrainings">
+
+          <tr>
+            <td class="text-center">{{u.trainingId}}</td>
+            <td>{{u.domain}}</td>
+            <td>{{u.startDate}}</td>
+            <td>{{u.endDate}}</td>
+            <td class="text-left">{{u.subject}}</td>
+            <td class="td-actions text-right">
+              <button (click) = "updateTraining(u.trainingId)" type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                <i class="tim-icons icon-pencil"></i>
+              </button>
+              <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                <i class="tim-icons icon-settings-gear-63"></i>
+              </button>
+              <button (click) = "deleteTraining(u.trainingId)" type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="bigContainer">
+
+<div (click)="keepAddPost()" id="inputs">
+  <img style="float:right;margin-top: -50px" src="../../../assets/img/mike.jpg" width="60" class="rounded-circle" alt="...">
+
+  <h3 *ngIf="!createPoll && !editing">Add post</h3>
+  <h3 *ngIf="createPoll && !editing">Create post with poll</h3>
+  <h3 *ngIf="editing">Update post</h3>
+
+  <div *ngIf="createPoll" class="row">
+      <div>
+        <div class="form-group">
+          <div>
+            <form style="width:100%" [formGroup]="addPollForm">
+            <input required formControlName="pollTitle" style="width:70%;float: left" id="pollTitle" [(ngModel)]="newPost.postTitle"  placeholder="Poll title" type="text" class="form-control">
+
+            <button [disabled]="!$any(addPollForm).valid || disableSubmit" (click)="addPostWithPoll()" style="width:15%;float: right" class="btn btn-info btn-icon" type="submit"><span *ngIf="!uploading && !editing">Create</span>
+              <span *ngIf="!uploading && editing">Update</span>
+              <span *ngIf="uploading" class="spinner"></span></button>
+
+             </form>
+          </div>
+          <br><br>
+          <div style="margin-left:15px;height:20px;color:red;font-size:12px" >
+            <span *ngIf="!pollTitle.valid && pollTitle.touched ">{{ getErrorPollTitle()}}</span>
+          </div>
+          <br><br>
+
+          <div style="color: red;float: right;margin-top: -40px;margin-right: 20px">
+            <span *ngIf="fieldMissing">Please fill all poll fields or remove them.</span>
+          </div>
+          <div style="" class="addFiles">
+            <div class="pollContainer">
+              <h3 style="margin: 20px 20px -20px;">Options</h3><br>
+              <span *ngFor="let optionInput of newPoll.fields; let i = index">
+                <table style="width: 100%"><tr><td style="width: 70%">
+                  <input [(ngModel)]="optionInput.field" required style="margin: 20px" placeholder="Option {{i+1}}" type="text" class="form-control">
+                </td><td><div *ngIf="i >1" (click)="newPoll.fields.pop()" class="endOption"> <mat-icon>close</mat-icon></div></td>
+                </tr></table>
+              </span>
+              <button (click)="addPollField()" style="width: 90%;margin: 20px" class="btn btn-info btn-icon">+ Add option</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+  <div *ngIf="!createPoll" class="row">
+    <form style="width:100%" [formGroup]="addPostForm">
+      <div>
+        <div class="form-group">
+          <div>
+            <input required formControlName="postTitle" style="width:70%;float: left" id="postTitle" [(ngModel)]="newPost.postTitle"  placeholder="Post title" type="text" class="form-control">
+
+            <button [disabled]="!$any(addPostForm).valid || disableSubmit" (click)="addPost()" style="width:15%;float: right" class="btn btn-info btn-icon" type="submit"><span *ngIf="!uploading && !editing">Post</span>
+              <span *ngIf="!uploading && editing">Update</span>
+              <span *ngIf="uploading" class="spinner"></span></button>
+
+          </div>
+          <br><br>
+          <div style="margin-left:15px;height:20px;color:red;font-size:12px" >
+            <span *ngIf="!postTitle.valid && postTitle.touched ">{{ getErrorPostTitle()}}</span>
+          </div>
+          <textarea formControlName="postContent" required  id="postContent" [(ngModel)]="newPost.postContent" placeholder="Post content" type="text" class="form-control"></textarea>
+
+          <div style="margin-left:15px;height:20px;color:red;font-size:12px">
+            <span  *ngIf="!postContent.valid && postContent.touched ">{{ getErrorPostContent()}} </span>
+          </div>
+          <br><br>
+          <div class="addFiles">
+            <div class="container" appDnd (fileDropped)="onFileDropped($event)">
+              <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($any($event.target).files)" />
+              <img src="../../../assets/img/dnd/ic-file.svg" width="90px" alt="">
+              <img src="../../../assets/img/dnd/ic-upload-file.svg" width="30px" style="float: right;margin-top: 10px" alt="">
+              <span style="color: white;font-size: 17px;margin-top: 8px;margin-left: 10px;">Drag and drop image here,
+              or Browse for image</span>
+            </div>
+            <div class="files-list">
+              <div *ngIf="editing && !createPoll">
+                <div class="single-file" *ngFor="let file of newPost.postFiles; let i = index">
+                  <img src="{{file.image}}" width="45px" style="margin-right: 20px" alt="file">
+                  <div class="infos">
+                    <h4 class="name">
+                      Image {{ i+1 }}
+                    </h4>
+                  </div>
+                  <img src="../../../assets/img/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file" (click)="setFilesToDelete(file, i)">
+                </div>
+                </div>
+              <div class="single-file" *ngFor="let file of files; let i = index">
+                <img src="{{previews[i]}}" width="45px" style="margin-right: 20px" alt="file">
+                <div class="infos">
+                  <h4 class="name">
+                    {{ file?.name }}
+                  </h4>
+                  <p class="size">
+                    {{ formatBytes(file?.size) }}
+                  </p>
+                  <app-progress [progress]="file?.progress"></app-progress>
+                </div>
+                <img src="../../../assets/img/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file" *ngIf="!uploading" (click)="deleteFile(i)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div>

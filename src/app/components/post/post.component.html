@@ -1,0 +1,105 @@
+<div *ngIf="showAddAdvertisement">
+
+  <app-create-ad></app-create-ad>
+</div>
+
+<div *ngIf="!showAddAdvertisement" class="main">
+
+  <div *ngIf="showSubToolTips && showToolTip" (click)="showSearch()" @shrinkAndLeave tooltip="Search posts" class="smallToolTip">
+    <mat-icon>search</mat-icon>
+  </div>
+  <div (click)="createPoll = false;showAddPost = true; showSubToolTips = false;" *ngIf="showSubToolTips && showToolTip" @shrinkAndLeave tooltip="Post" style="top: 65%" class="smallToolTip">
+    <mat-icon>create</mat-icon>
+  </div>
+    <div (click)="createPoll= true;showAddPost = true; showSubToolTips = false" *ngIf="showSubToolTips && showToolTip" @shrinkAndLeave style="top: 55%"  tooltip="Poll" class="smallToolTip">
+    <mat-icon>poll</mat-icon>
+  </div>
+  <div (click)="createPoll= true;showAddPost = false; showSubToolTips = false; showAddAdvertisement = true" *ngIf="showSubToolTips && showToolTip" @shrinkAndLeave style="top: 45%"  tooltip="Advertisement" class="smallToolTip">
+    <i class="fa-solid fa-bullhorn"></i>
+  </div>
+  <div *ngIf="showToolTip" (click)="showSubToolTips = !showSubToolTips" @shrinkAndLeave class="bigToolTip" tooltip="create a new post">
+    <mat-icon @enterSlow *ngIf="!showSubToolTips">rounded_corner</mat-icon>
+    <mat-icon @rotatedState *ngIf="showSubToolTips">close</mat-icon>
+  </div>
+  <div class="loadingDiv" *ngIf="loadingData">
+    <img height="700" src="assets/images/gif/Only-Logo-slow.gif"/>
+  </div>
+  <div *ngIf="!loadingData " style="height: 180px" class="container">
+    <div style="display: flex;justify-content: center;width: 100%">
+    <img src="../../../assets/img/mike.jpg" width="60" class="rounded-circle" alt="...">
+    <div (click)="showAddPost = true; createPoll = false;" class="inputDiv">
+      What's on your mind...
+    </div>
+    </div><br>
+    <div class="newPostItems">
+    <div class="newPostItem" (click)="createPoll = true; showAddPost = true"><mat-icon>poll</mat-icon> Start a poll</div>
+      <div class="verticalLine"></div>
+
+    <span ngbDropdown class="d-inline-block float_right" placement="bottom-right">
+    <div data-toggle="dropdown"
+         ngbDropdownToggle class="newPostItem"><mat-icon>sort</mat-icon> Sort posts by</div>
+
+      <div class="dropdown-menu dropdown-with-icons" ngbDropdownMenu>
+          <a
+            (click)="filterPosts('newest')"
+            [ngStyle]="{'background': filterType == 'newest' ? 'lightgrey' :''}"
+            class="dropdown-item"
+            style="cursor:pointer;"
+          >
+            <i class="tim-icons icon-paper"> </i> Newest
+          </a>
+          <a
+            (click)="filterPosts('popular')"
+            [ngStyle]="{'background': filterType == 'popular' ? 'lightgrey' :''}"
+            class="dropdown-item"
+            style="cursor:pointer;">
+            <i class="tim-icons icon-bullet-list-67"> </i> Popular
+          </a>
+         <a
+           (click)="filterPosts('recommended')"
+           [ngStyle]="{'background': filterType == 'recommended' ? 'lightgrey' :''}"
+           class="dropdown-item"
+           style="cursor:pointer;">
+            <i class="tim-icons icon-bullet-list-67"> </i> Recommended for you
+          </a>
+      </div>
+    </span>
+      <div class="verticalLine"></div>
+      <div  class="searchPostIcon" (click)="refreshPostsByCLose()">
+        <mat-icon tooltip="Search posts" @enterSlow *ngIf="!showSearchBar">search</mat-icon>
+        <mat-icon @rotatedState *ngIf="showSearchBar">close</mat-icon>
+        <div style="width:225px" *ngIf="!showSearchBar"></div>
+      </div>
+      <div style="width: 200px" *ngIf="showSearchBar">
+      <input (input)="updateSearchValue()" (keyup)="searchPosts($event)" id="searchInput" type="text" placeholder="Search posts.." *ngIf="showSearchBar" @enterAnimation class="form-control" style="margin-left: -35px;width: 200px;background-color:#3a3b3c;height: 30px;margin-top:4px;border-radius: 40px"/>
+      </div>
+      </div>
+  </div>
+<div *ngIf="!loadingData">
+  <div *ngIf="showAddPost" (click)="this.closeAddPost()" class="showAddPost">
+
+   <app-add-post></app-add-post>
+  </div>
+  <div class="posts">
+  <div class="container empty" *ngIf= "posts.length ==0">
+
+    <div class="loadingForComments" *ngIf="posts.length ==0">
+      <img *ngIf="refreshing" height="80" src="assets/images/gif/Only-Logo-slow.gif" alt="img"/>
+    </div>
+    <span *ngIf="!refreshing">
+    No posts to show</span>
+    </div>
+  <div *ngIf="posts.length !=0">
+    <div *ngFor="let post of posts">
+      <app-single-post [post]= "post" [currentUser]="currentUser"></app-single-post>
+  </div>
+  </div>
+    <div class="loadingForComments" style="font-size: 20px;color: white;opacity: 0.8"  *ngIf="noMorePosts">
+      No more posts to show.
+    </div>
+    <div class="loadingForComments" *ngIf="secondaryLoading">
+      <img height="80" src="assets/images/gif/Only-Logo-slow.gif" alt="img"/>
+    </div>
+</div>
+</div>
+</div>

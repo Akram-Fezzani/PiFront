@@ -1,0 +1,176 @@
+
+<div class="container">
+  <div class="mb-6" >
+    <div class="row no-gutters">
+      <div class="row" style="margin-bottom:20px;width: 100%">
+        <img src="../../../assets/img/mike.jpg" width="80" class="rounded-circle" alt="...">
+        <span class="userInfo">
+      {{post.postOwner.firstName}} {{post.postOwner.lastName}}
+          <br>
+    <span class="postDate">{{post.postDate}}</span>
+    </span>
+        <!--post dropdown list-->
+        <div class="dropdown nav-item" style="color:white;margin-left: 65%;cursor: pointer" dropdown>
+        <span
+          data-toggle="dropdown"
+          dropdownToggle><mat-icon>more_horiz</mat-icon></span>
+
+          <div class="dropdown-menu dropdown-with-icons" style="margin-top: -40px" *dropdownMenu>
+            <span *ngIf="post.postOwner.id == currentUser.id">
+            <a
+              (click)="updatePost()"
+              class="dropdown-item"
+              style="cursor:pointer;"
+            >
+              <i class="tim-icons icon-paper"> </i> Edit
+            </a>
+            <a
+              (click)="deletePost()"
+              [ngStyle]="{'background': post.commentsFilterType == 'popular' ? 'lightgrey' :''}"
+              class="dropdown-item"
+              style="cursor:pointer;">
+              <i class="tim-icons icon-bullet-list-67"> </i> Delete
+            </a>
+              </span>
+            <a
+              (click)="deletePost()"
+              [ngStyle]="{'background': post.commentsFilterType == 'popular' ? 'lightgrey' :''}"
+              class="dropdown-item"
+              style="cursor:pointer;">
+              <i class="tim-icons icon-bullet-list-67"> </i> Report
+            </a>
+          </div>
+        </div>
+        <!--end-->
+
+
+      </div>
+      <div class="row" style="color: white !important;">
+        <div class="col-md-12">
+          <div class="card-body">
+            <h2 class="card-title">{{post.postTitle}}
+            </h2>
+            <span style="margin-left: 83%" *ngIf="post.poll != null">Total votes: {{post.poll.voteCount}}</span>
+            <p *ngIf="post.poll == null" class="card-text">{{post.postContent}}</p>
+
+            <div *ngIf="post.poll != null" class="poll">
+          <span  *ngFor="let field of post.poll.fields | orderBy: '-votesCount'">
+          <div class="pollField" (click)="voteField(field, post.poll)" [ngClass]="{'votedField': field.votedByCurrentUser}">
+            <div>{{field.field}}</div>
+            <div *ngIf="field.votes != null" style="float: right;margin-top: -20px">{{field.votes.length}} vote<span *ngIf="field.votes.length != 1">s</span></div>
+            <div *ngIf="field.votes == null" style="float: right;margin-top: -20px">0 votes</div>
+          </div>
+          </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div  class="mediaContainer">
+        <div *ngIf="post.postFiles.length !=0" class="media">
+          <ngb-carousel [interval]="0">
+            <ng-template *ngFor="let file of post.postFiles" ngbSlide>
+              <div class="picsum-img-wrapper">
+                <img height="500" src="{{file.image}}" alt="Image">
+              </div>
+              <div class="carousel-caption">
+                <h3>{{post.postTitle}}</h3>
+              </div>
+            </ng-template>
+          </ngb-carousel>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row fs-12 buttonsContainer">
+        <div *ngIf="currentUser != null" [ngStyle]="{'color': post.likedByCurrentUser == 'UP' ? 'rgb(45,134,255)' :''}" (click)="likePost(post, 'UP')" class="like p-2 cursor"><span class="material-icons-sharp">thumb_up_alt</span><span class="ml-1">{{post.likesCount}} Likes</span></div>
+        <div style="text-align:center;width: 50px" *ngIf="currentUser != null" class="likesNumber">{{post.numberOfLikes}}</div>
+        <div *ngIf="currentUser != null" [ngStyle]="{'color': post.likedByCurrentUser == 'DOWN' ? 'rgb(45,134,255)' :''}" (click)="likePost(post, 'DOWN')"  class="like p-2 cursor"><span class="material-icons-sharp">thumb_down_alt</span><span class="ml-1">{{post.dislikesCount}} Dislikes</span></div>
+        <!--        <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span></div>-->
+      </div>
+      <br>
+      <hr style="border: 0.5px solid white;width: 100%;opacity: 0.1"/>
+      <div *ngIf="currentUser != null" class="row addCommentContainer">
+        <img src="../../../assets/img/mike.jpg" width="40" class="rounded-circle" alt="...">
+        <input [disabled]="savingComment" value="" id="commentInput{{post.postId}}" (keyup)="addComment(post, $event)" placeholder="Add a comment..." type="text" class="form-control commentInput"/>
+        <button class="btn btn-light btn-icon spinnerContainer" disabled><span *ngIf="savingComment" class="spinner"></span></button>
+
+      </div>
+      <div class="d-flex flex-row fs-12 commentsIcon">
+
+        <div class="like p-2" style="float: left"><span class="material-icons-sharp">comment</span><span class="ml-1"><span class="commentsNumber">{{post.listComments.length}} </span>Comment<span *ngIf="post.listComments.length != 1">s</span></span>
+
+          <!--comments dropdown list-->
+          <span [isDisabled]="post.listComments.length == 0" class="dropdown nav-item" dropdown>
+        <span style="margin-left: 10px;cursor: pointer"
+              data-toggle="dropdown"
+              dropdownToggle><mat-icon class="material-icons-sharp">sort</mat-icon><span style="font-size: 11px">Sort by</span></span>
+
+        <div class="dropdown-menu dropdown-with-icons" *dropdownMenu>
+          <a
+            (click)="filterComments('newest')"
+            [ngStyle]="{'background': post.commentsFilterType == 'newest' ? 'lightgrey' :''}"
+            class="dropdown-item"
+            style="cursor:pointer;"
+          >
+            <i class="tim-icons icon-paper"> </i> Newest
+          </a>
+          <a
+            (click)="filterComments('popular')"
+            [ngStyle]="{'background': post.commentsFilterType == 'popular' ? 'lightgrey' :''}"
+            class="dropdown-item"
+            style="cursor:pointer;">
+            <i class="tim-icons icon-bullet-list-67"> </i> Popular
+          </a>
+      </div>
+      </span>
+          <!--end-->
+
+        </div>
+        <div style="margin-left: 60%;margin-top: 20px; cursor: pointer" tooltip="Comments section" (click)="post.showCommentsSection =! post.showCommentsSection"><mat-icon>unfold_more</mat-icon>
+        </div>
+
+      </div>
+      <div class="loadingForComments" *ngIf="commentsLoading">
+        <img height="80" src="assets/images/gif/Only-Logo-slow.gif" alt="img"/>
+      </div>
+      <div  @enterHeight *ngIf="post.listComments.length != 0 && !commentsLoading && post.showCommentsSection" class="commentsSection">
+        <div *ngFor="let comment of post.listComments" class="comment">
+          <div class="row" style="margin-bottom:20px;width: 100%">
+            <img src="../../../assets/img/mike.jpg" width="60" class="rounded-circle" alt="...">
+            <span class="userInfo">
+      {{comment.commentOwner.firstName}} {{comment.commentOwner.lastName}}
+              <br>
+    <span class="postDate">{{comment.commentDate}}</span>
+    </span>
+          </div>
+          <p class="card-text">{{comment.commentText}}</p><br>
+          <div  class="reactionList">
+            <div @interFromBottomTrigger style="display: flex" *ngIf="comment.listCommentReacts.length !=0">
+              <img *ngIf="comment.firstReact != 'none'" class="reactionImgStatic" src="../../../assets/img/reactions/{{comment.firstReact}}.png"/>
+              <img *ngIf="comment.secondReact != 'none'" class="reactionImgStatic" src="../../../assets/img/reactions/{{comment.secondReact}}.png"/>
+              <img *ngIf="comment.thirdReact != 'none'" class="reactionImgStatic" src="../../../assets/img/reactions/{{comment.thirdReact}}.png"/>
+              <div class="reactsCount">{{comment.listCommentReacts.length}}</div>
+            </div>
+          </div>
+          <hr style="margin-bottom:20px;border: 0.5px solid white;width: 100%;opacity: 0.1"/>
+          <div class="d-flex flex-row fs-12 commentsIcon" style="margin-top: -20px;margin-bottom: 40px">
+            <div @myInsertRemoveTrigger *ngIf="comment.showReactions" (mouseenter)="dontleaveReactions(comment)" (mouseleave)="getReadyToLeaveReactionsInside(comment)" class="reactions">
+              <img (click)="reactToComment('Like', comment)" class="reactionImg" src="../../../assets/img/reactions/Like.gif"/>
+              <img (click)="reactToComment('Heart', comment)"class="reactionImg" src="../../../assets/img/reactions/Heart.gif"/>
+              <img (click)="reactToComment('Laugh', comment)"class="reactionImg" src="../../../assets/img/reactions/Laugh.gif"/>
+              <img (click)="reactToComment('Wow', comment)"class="reactionImg" src="../../../assets/img/reactions/Wow.gif"/>
+              <img (click)="reactToComment('Cry', comment)"class="reactionImg" src="../../../assets/img/reactions/Cry.gif"/>
+              <img (click)="reactToComment('Angry', comment)"class="reactionImg" src="../../../assets/img/reactions/Angry.gif"/>
+            </div>
+            <div (click)="parentButtonReact(comment)" class="like p-2 cursor1" (mouseenter)="showReactions(comment)" (mouseleave)="getReadyToLeaveReactionsOutside(comment)">
+              <span @myInsertRemoveTrigger *ngIf="comment.currentReact == 'null'" class="material-icons-sharp">thumb_up_alt</span>
+              <img @myInsertRemoveTrigger height="24" *ngIf="comment.currentReact !='null' && comment.currentReact != 'wait'" style="cursor: pointer" src="../../../assets/img/reactions/{{comment.currentReact}}.png"/>
+            </div>
+            <div style="margin-left: 10px;width: 50px" class="like p-2 cursor1"><span title="Report" class="material-icons-sharp">flag</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

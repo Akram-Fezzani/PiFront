@@ -1,0 +1,157 @@
+<div id="sidebarContainer" class="page-wrapper chiller-theme ">
+  <div id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <div class="sidebar-header">
+        <div class="user-pic">
+          <img class="img-responsive rounded-circle" src="assets/img/mike.jpg"
+               alt="User picture">
+        </div>
+        <div class="user-info">
+          <span class="user-name"><strong>
+            {{currentUser.firstName}} {{currentUser.lastName}}
+          </strong></span>
+          <span class="user-status">
+            <i class="fa fa-circle" style="color: lawngreen;margin-right: 5px"></i>
+            <span>Online</span>
+          </span>
+          <span *ngIf="playNotif" (click)="playNotif =  false" tooltip="Mute notification sound" style="color:white;cursor:pointer;float: right;margin-right: -30px;font-size:17px;margin-top: 20px">
+            <i class="fa fa-volume-high"></i>
+          </span>
+          <span *ngIf="!playNotif" tooltip="Unmute notification sound" (click)="playNotif = true" style="color:white;cursor:pointer;float: right;margin-right: -30px;font-size:17px;margin-top: 20px">
+            <i class="fa fa-volume-mute"></i>
+          </span>
+        </div>
+      </div>
+      <!-- sidebar-header  -->
+      <div class="sidebar-search">
+        <div>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="searchText" class="form-control search-menu" placeholder="Search chatrooms...">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- sidebar-search  -->
+      <div style="justify-content: center;display: flex;width: 100%;margin-top: 40px" *ngIf="loadingRooms">
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+      <div *ngIf="!loadingRooms" class="sidebar-menu">
+
+        <div style="justify-content: center;display: flex;width: 100%;">
+          <span style="margin: 10px;cursor: pointer" (click)="addNewRoom = true" *ngIf="!addNewRoom" class="badge badge-pill badge-success">create a new room</span>
+          <span *ngIf="addNewRoom" >
+             <input placeholder="Subject..." (keyup)="addChatRoom($event)" id="addRoomInput" type="text" class="form-control" style="margin: 10px;cursor: pointer"/>
+             <span  tooltip="Cancel" (click)="clearAddInput()" style="z-index:99999;cursor:pointer;margin-left:80%;margin-top:-38px;position: absolute"><i class="fa fa-xmark"></i></span>
+           </span>
+        </div>
+        <div *ngIf="ownedRooms != null">
+          <ul *ngIf="ownedRooms.length > 0">
+            <li class="header-menu">
+              <span>Your chatrooms</span>
+            </li>
+          </ul>
+          <ul style="margin-top: 20px">
+            <li *ngFor=" let room of ownedRooms  | filter:searchText" style="margin: 20px">
+              <span *ngIf="room.ownerId == currentUser.id">
+              <span style="cursor: pointer;" (click)="joinRoom(room,0)">{{room.subject}}</span>
+              <span style="float:right;cursor: pointer;margin-top: 0" (click)="destroyRoom(room)" class="badge badge-pill badge-danger">Destroy</span>
+           </span>
+            </li>
+          </ul>
+          <ul *ngIf="currentUser.joinedRooms.length > 0">
+            <li class="header-menu">
+              <span>Joined chatrooms</span>
+            </li>
+          </ul>
+          <ul style="margin-top: 20px">
+            <li *ngFor=" let room of currentUser.joinedRooms  | filter:searchText" style="margin: 20px">
+              <span *ngIf="room.ownerId != currentUser.id">
+              <span style="cursor: pointer;" (click)="joinRoom(room, 0)">{{room.subject}}</span>
+              <span style="float:right;cursor: pointer;margin-top: 0" (click)="leave(room)" class="badge badge-pill badge-warning">Leave</span>
+            </span>
+            </li>
+          </ul>
+        </div>
+        <ul>
+          <li class="header-menu">
+            <span>Available chatrooms</span>
+          </li>
+          </ul>
+        <div style="justify-content: center;display: flex;width: 100%;margin-top: 40px" *ngIf="roomList.length == 0">
+          No rooms to show
+        </div>
+        <ul *ngIf="roomList.length >0" style="margin-top: 20px  ">
+          <li *ngFor="let room of roomList  | filter:searchText" style="margin: 20px;cursor: pointer">
+            <span (click)="joinRoom(room, 1)">
+              <span>{{room.subject}}</span>
+              <span style="float:right;cursor: pointer;margin-top: 0" *ngIf="!room.joined" class="badge badge-pill badge-info">Join</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+    </div>
+    <!-- sidebar-content  -->
+    <div class="sidebar-footer">
+      <a href="#">
+        <i class="fa fa-bell"></i>
+        <span class="badge badge-pill badge-warning notification">3</span>
+      </a>
+      <a href="#">
+        <i class="fa fa-envelope"></i>
+        <span class="badge badge-pill badge-success notification">7</span>
+      </a>
+      <a href="#">
+        <i class="fa fa-cog"></i>
+        <span class="badge-sonar"></span>
+      </a>
+      <a href="#">
+        <i class="fa fa-power-off"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Chat -->
+<div *ngIf="currentChatRoom != null" style="position: fixed;z-index: 999;left:18%;top: 25%;width: 500px" id="chat-page">
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>{{currentChatRoom.subject}} <span id="topicField"></span></h2>
+      <span style="float: right;font-size: 20px;color: white;margin-top: -30px;cursor: pointer" (click)="closeRoom()"><i class="fa fa-close"></i></span>
+    </div>
+
+    <div *ngIf="messages.length == 0" class="connecting">Connecting...</div>
+    <ul #messageArea id="messageArea">
+      <span  *ngFor="let msg of messages">
+        <li *ngIf="msg.type =='JOIN' " class="event-message">
+          {{msg.sender}} joined !
+      </li>
+          <li *ngIf="msg.type =='LEAVE' " class="event-message">
+          {{msg.sender}} left !
+      </li>
+          <li *ngIf="msg.type =='CHAT'  || msg.type == 'REFRESH'" [ngStyle]="{'text-align': msg.senderId == currentUser.id ? 'right': 'left', 'margin-left': msg.senderId != currentUser.id ? '-25px': ''}" class="chat-message">
+            <i [style.background-color]="getAvatarColor(msg.sender)" [ngClass]="{'rightMsgIcon': msg.senderId == currentUser.id ? 'leftMsgIcon' :''}">{{msg.sender[0]}}</i>
+            <span style="color:white;margin-left:40px;padding-top:5px">{{msg.sender}}</span>
+            <p style="color:white;margin-left:40px;padding-top:5px">{{msg.content}}</p>
+      </li>
+      </span>
+
+    </ul>
+    <form id="messageForm" name="messageForm" name="messageForm">
+      <div class="form-group">
+        <div class="input-group clearfix">
+          <input (keyup)="sendMessage($event)" type="text" id="messageInput" placeholder="Type a message..."
+                 autocomplete="off" class="form-control" />
+          <button type="submit" (click)="sendMessageWithClick($event)" class="btn btn-info primary">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- end chat -->
